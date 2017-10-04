@@ -33,6 +33,14 @@ type s3Backend struct {
 	dir string
 }
 
+type S3Backend struct {
+	s3Backend
+}
+
+func NewS3Backend(S3 *s3.S3, dir string) *S3Backend {
+	return &S3Backend{s3Backend{S3, dir}}
+}
+
 func (sb *s3Backend) save(version string, snapRev int64, rc io.Reader) (int64, error) {
 	// make a local file copy of the backup first, since s3 requires io.ReadSeeker.
 	key := makeBackupName(version, snapRev)
